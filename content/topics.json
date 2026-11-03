@@ -1,0 +1,58 @@
+{
+  "topics": [
+    {
+      "id": "c-growth",
+      "name": "C 端增长",
+      "icon": "trending-up",
+      "desc": "C 端增长项目：落地页优化、A/B 测试、用户画像、漏斗模型、从 idea 到上线"
+    },
+    {
+      "id": "ai-system",
+      "name": "AI 系统知识",
+      "icon": "layers",
+      "desc": "AI 通识课：AI PM 能力模型、智能客服架构、AI 产品设计范式"
+    },
+    {
+      "id": "ai-general",
+      "name": "AI 通识",
+      "icon": "book",
+      "desc": "AI 产品经理通识课：评测方法论、行业认知与通用工作方法"
+    },
+    {
+      "id": "ai-native",
+      "name": "AI Native 认知与人机协同",
+      "icon": "spark",
+      "desc": "AI Native 的工作模式、Agent 原理、上下文工程与个人杠杆"
+    },
+    {
+      "id": "requirement-review",
+      "name": "需求评审",
+      "icon": "clipboard",
+      "desc": "需求评审会的流程、角色、注意事项与主持方法"
+    },
+    {
+      "id": "ai-product-metrics",
+      "name": "AI 产品评估指标",
+      "icon": "chart",
+      "desc": "模型与AI 产品的效果评估、指标体系设计"
+    },
+    {
+      "id": "prompt-engineering",
+      "name": "Prompt 工程",
+      "icon": "terminal",
+      "desc": "提示词设计、上下文工程、指令优化"
+    },
+    {
+      "id": "model-selection",
+      "name": "模型选型与落地",
+      "icon": "cpu",
+      "desc": "自研 vs 采购、模型评估、成本与效果权衡"
+    },
+    {
+      "id": "project-management",
+      "name": "项目管理",
+      "icon": "route",
+      "desc": "排期、版本发布、跨团队协作"
+    }
+  ]
+}
