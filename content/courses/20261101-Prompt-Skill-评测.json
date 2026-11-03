@@ -1,12 +1,12 @@
 {
   "id": "20261101-Prompt-Skill-评测",
-  "title": "评测（一）：Prompt 与 Skill 怎么评",
+  "title": "Prompt 与 Skill 怎么评",
   "date": "2026-11-01",
   "source": "腾讯会议直播转写 + 课件截图",
   "instructor": "拾光老师",
   "duration": "约75min",
   "summary": "评测的可信度来自只换一个变量：三类评测集 + Checkpoint 拦红线 + 加权 Rubric 比质量 + 人校准机评，决定能否发布；Skill 额外评调用、轨迹、交付、使用四层。",
-  "topics": ["ai-general"],
+  "topics": ["ai-system"],
   "tags": ["AI评测", "Prompt评测", "Skill评测", "Checkpoint", "Rubric", "LLM-as-a-Judge", "评测产品经理"],
 
   "notes": {

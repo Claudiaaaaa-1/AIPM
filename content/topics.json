@@ -8,15 +8,9 @@
     },
     {
       "id": "ai-system",
-      "name": "AI 系统知识",
-      "icon": "layers",
-      "desc": "AI 通识课：AI PM 能力模型、智能客服架构、AI 产品设计范式"
-    },
-    {
-      "id": "ai-general",
       "name": "AI 通识",
-      "icon": "book",
-      "desc": "AI 产品经理通识课：评测方法论、行业认知与通用工作方法"
+      "icon": "layers",
+      "desc": "AI 通识课：AI PM 能力模型、工作流差异、AI 发展现状与头部大厂布局"
     },
     {
       "id": "ai-native",
