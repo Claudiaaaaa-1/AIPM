@@ -2,9 +2,9 @@
   "topics": [
     {
       "id": "c-growth",
-      "name": "C 端增长",
+      "name": "基础项目",
       "icon": "trending-up",
-      "desc": "C 端增长项目：落地页优化、A/B 测试、用户画像、漏斗模型、从 idea 到上线"
+      "desc": "基础项目实战：落地页优化、A/B 测试、用户画像、漏斗模型、从 idea 到上线"
     },
     {
       "id": "ai-system",

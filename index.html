@@ -10,6 +10,16 @@
     --txt:#e6e8ec; --muted:#9aa3b2; --dim:#6b7280;
     --accent:#7F77DD; --accent2:#1D9E75; --amber:#EF9F27; --coral:#D85A30; --blue:#378ADD;
     --radius:12px;
+    --mark-bg:rgba(239,159,39,.22); --mark-txt:#FAC775;
+    --user-take-txt:#C0DD97;
+  }
+  /* 米色主题 */
+  [data-theme="cream"]{
+    --bg:#FAF6F0; --panel:#FFFFFF; --panel2:#F5F0E8; --line:#E8E0D4;
+    --txt:#3A3630; --muted:#7A7268; --dim:#A99F92;
+    --accent:#6B5CE7; --accent2:#1A9E6E; --amber:#D4880F; --coral:#C74E2A; --blue:#2B7DE0;
+    --mark-bg:rgba(212,136,15,.18); --mark-txt:#9A6A0A;
+    --user-take-txt:#1A7A5A;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{background:var(--bg);color:var(--txt);font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;font-size:14px;line-height:1.6;display:flex;height:100vh;overflow:hidden}
@@ -32,6 +42,17 @@
   .item .dot{width:6px;height:6px;border-radius:50%;background:var(--dim);flex-shrink:0}
   .item.sub{padding-left:26px;font-size:12px}
   .empty{color:var(--dim);font-size:12px;padding:20px 12px;text-align:center;line-height:1.8}
+  /* 搜索结果 */
+  .search-course-title{font-size:11px;color:var(--accent);font-weight:600;padding:10px 10px 4px;letter-spacing:.3px}
+  .search-hit{padding:7px 10px;border-radius:7px;cursor:pointer;display:flex;flex-direction:column;gap:2px}
+  .search-hit:hover{background:var(--panel2)}
+  .sh-field{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.3px}
+  .sh-text{font-size:12px;color:var(--muted);line-height:1.4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  /* 搜索高亮闪烁 */
+  .search-flash{background:rgba(239,159,39,.4);border-radius:2px;padding:0 1px;transition:background .3s}
+  .search-flash.active{background:rgba(239,159,39,.15)}
+  @keyframes flashPulse{0%,100%{background:rgba(239,159,39,.4)}50%{background:rgba(239,159,39,.1)}}
+  .search-flash.flashing{animation:flashPulse .8s ease-in-out 3}
   /* Main */
   .main{flex:1;overflow-y:auto}
   .topbar{padding:22px 40px 0;max-width:860px;margin:0 auto}
@@ -61,7 +82,7 @@
   .mytake .editbtn{float:right;background:none;border:1px solid var(--line);color:var(--dim);border-radius:6px;padding:2px 8px;font-size:11px;cursor:pointer}
   .mytake .editbtn:hover{color:var(--txt);border-color:var(--accent)}
   .mytake .ai-take{font-family:var(--font-sans,inherit)}
-  .mytake .user-take{font-family:Georgia,"Songti SC",serif;font-style:italic;color:#C0DD97;margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
+  .mytake .user-take{font-family:Georgia,"Songti SC",serif;font-style:italic;color:var(--user-take-txt);margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
   .mytake .user-take .ulbl{font-style:normal;font-size:11px;color:var(--accent2);font-weight:500;display:block;margin-bottom:4px;letter-spacing:.3px}
   .mytake textarea{width:100%;background:var(--panel2);border:1px solid var(--accent);border-radius:8px;padding:10px 12px;color:var(--txt);font-size:13px;outline:none;resize:vertical;min-height:90px;font-family:inherit;line-height:1.6}
   .mytake .editrow{display:flex;gap:8px;margin-top:8px}
@@ -79,10 +100,16 @@
   .dg-head{display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-size:12px;color:var(--muted);user-select:none;margin-bottom:8px}
   .dg-head:hover{color:var(--txt)}
   .dg-head .chev{transition:.15s;font-size:10px}
+  .dg-del{background:none;border:1px solid var(--line);color:var(--dim);border-radius:5px;width:20px;height:20px;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;transition:.15s;padding:0}
+  .diagram:hover .dg-del{opacity:1}
+  .dg-del:hover{color:#E24B4A;border-color:#E24B4A}
   .diagram.collapsed .dg-body{display:none}
   .diagram.collapsed .chev{transform:rotate(-90deg)}
   .diagram.collapsed{padding:10px 14px}
-  mark{background:rgba(239,159,39,.22);color:#FAC775;padding:0 3px;border-radius:3px}
+  /* 米色主题下让配图背景适配 */
+  [data-theme="cream"] .diagram{background:#FFFDF8;border-color:var(--line)}
+  [data-theme="cream"] .diagram .mermaid svg{filter:none}
+  mark{background:var(--mark-bg);color:var(--mark-txt);padding:0 3px;border-radius:3px}
   .qcard{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:0;margin-bottom:12px;overflow:hidden}
   .qhead{padding:14px 18px;cursor:pointer;display:flex;gap:10px;align-items:flex-start}
   .qhead:hover{background:var(--panel2)}
@@ -134,6 +161,33 @@
   .topbtn:hover{color:var(--txt);border-color:var(--accent)}
   ::-webkit-scrollbar{width:8px;height:8px}
   ::-webkit-scrollbar-thumb{background:var(--line);border-radius:4px}
+  /* 头像 + 主题切换 */
+  .profile{display:flex;align-items:center;gap:10px;padding:14px 14px 10px;border-top:1px solid var(--line)}
+  .avatar-wrap{position:relative;width:38px;height:38px;flex-shrink:0;cursor:pointer}
+  .avatar{width:38px;height:38px;border-radius:50%;object-fit:cover;border:2px solid var(--line);transition:.15s}
+  .avatar:hover{border-color:var(--accent)}
+  .avatar-edit{position:absolute;bottom:-2px;right:-2px;width:14px;height:14px;border-radius:50%;background:var(--accent);color:#fff;font-size:9px;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--panel)}
+  .profile-info{flex:1;min-width:0}
+  .profile-info .pname{font-size:13px;font-weight:500;color:var(--txt)}
+  .theme-toggle{background:var(--panel2);border:1px solid var(--line);color:var(--muted);width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:.15s;flex-shrink:0}
+  .theme-toggle:hover{border-color:var(--accent);color:var(--txt)}
+  /* 关系图谱 */
+  .graph-btn{background:var(--panel2);border:1px solid var(--line);color:var(--muted);padding:8px 14px;border-radius:8px;cursor:pointer;font-size:12px;width:100%;margin-top:8px;transition:.15s;display:flex;align-items:center;justify-content:center;gap:6px}
+  .graph-btn:hover{border-color:var(--accent);color:var(--txt)}
+  .graph-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:var(--bg);z-index:1000;display:none;flex-direction:column}
+  .graph-overlay.open{display:flex}
+  .graph-header{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;border-bottom:1px solid var(--line)}
+  .graph-header h2{font-size:16px;font-weight:600}
+  .graph-header .close-btn{background:var(--panel2);border:1px solid var(--line);color:var(--muted);width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
+  .graph-header .close-btn:hover{color:var(--txt);border-color:var(--accent)}
+  .graph-container{flex:1;position:relative;overflow:hidden}
+  .graph-container canvas{width:100%;height:100%}
+  .graph-tooltip{position:absolute;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--txt);pointer-events:none;display:none;max-width:240px;box-shadow:0 4px 12px rgba(0,0,0,.3)}
+  .graph-tooltip .tt-title{font-weight:600;margin-bottom:2px}
+  .graph-tooltip .tt-sub{color:var(--muted);font-size:11px}
+  .graph-legend{position:absolute;bottom:16px;left:16px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:11px;color:var(--muted)}
+  .graph-legend .lg-item{display:flex;align-items:center;gap:6px;margin:3px 0}
+  .graph-legend .lg-dot{width:8px;height:8px;border-radius:50%}
 </style>
 </head>
 <body>
@@ -153,8 +207,20 @@
   </div>
   <div style="padding:0 14px 12px">
     <button class="topbtn" style="width:100%" onclick="showImport()">＋ 导入转写</button>
+    <button class="graph-btn" onclick="openGraph()">◈ 关系图谱</button>
   </div>
   <div class="tree" id="tree"></div>
+  <div class="profile">
+    <div class="avatar-wrap" onclick="document.getElementById('avatarInput').click()" title="点击更换头像">
+      <img class="avatar" id="avatarImg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 38 38'%3E%3Crect width='38' height='38' rx='19' fill='%237F77DD'/%3E%3Ctext x='19' y='24' text-anchor='middle' fill='white' font-size='14' font-weight='600'%3EC%3C/text%3E%3C/svg%3E" alt="avatar">
+      <div class="avatar-edit">✎</div>
+      <input type="file" id="avatarInput" accept="image/*" style="display:none" onchange="changeAvatar(this)">
+    </div>
+    <div class="profile-info">
+      <div class="pname">Claudy</div>
+    </div>
+    <button class="theme-toggle" onclick="toggleTheme()" title="切换主题">☀️</button>
+  </div>
 </aside>
 
 <main class="main" id="main">
@@ -226,13 +292,31 @@
   </div>
 </main>
 
+<!-- 关系图谱覆盖层 -->
+<div class="graph-overlay" id="graphOverlay">
+  <div class="graph-header">
+    <h2>◈ 知识关系图谱</h2>
+    <button class="close-btn" onclick="closeGraph()">✕</button>
+  </div>
+  <div class="graph-container">
+    <canvas id="graphCanvas"></canvas>
+    <div class="graph-tooltip" id="graphTooltip"></div>
+    <div class="graph-legend">
+      <div class="lg-item"><div class="lg-dot" style="background:#7F77DD"></div> 课程</div>
+      <div class="lg-item"><div class="lg-dot" style="background:#1D9E75"></div> 知识点</div>
+      <div class="lg-item"><div class="lg-dot" style="background:var(--amber)"></div> 跨课程关联</div>
+    </div>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 <script>
 if(window.mermaid){
+  const savedTheme=localStorage.getItem('ai-learn-theme')||'dark';
   mermaid.initialize({
     startOnLoad:false,
-    theme:'dark',
-    themeVariables:{
+    theme:savedTheme==='dark'?'dark':'neutral',
+    themeVariables:savedTheme==='dark'?{
       primaryColor:'#1e222b',
       primaryTextColor:'#e6e8ec',
       primaryBorderColor:'#7F77DD',
@@ -246,6 +330,21 @@ if(window.mermaid){
       clusterBorder:'#2a2f3a',
       titleColor:'#e6e8ec',
       edgeLabelBackground:'#1e222b',
+      fontSize:'14px'
+    }:{
+      primaryColor:'#F5F0E8',
+      primaryTextColor:'#3A3630',
+      primaryBorderColor:'#6B5CE7',
+      lineColor:'#7A7268',
+      secondaryColor:'#FFFFFF',
+      tertiaryColor:'#FFFFFF',
+      background:'#FFFFFF',
+      mainBkg:'#F5F0E8',
+      nodeBorder:'#6B5CE7',
+      clusterBkg:'#FFFFFF',
+      clusterBorder:'#E8E0D4',
+      titleColor:'#3A3630',
+      edgeLabelBackground:'#F5F0E8',
       fontSize:'14px'
     },
     flowchart:{curve:'basis',htmlLabels:true,padding:12}
@@ -413,10 +512,89 @@ function match(c, kw){
   return (c.title||'').toLowerCase().includes(kw) || (c.tags||[]).join(' ').toLowerCase().includes(kw) || (c.summary||'').toLowerCase().includes(kw);
 }
 
+// 深度搜索：在课程所有内容中查找关键词
+function deepSearch(kw){
+  if(!kw || kw.length<2) return [];
+  const lower = kw.toLowerCase();
+  const results = [];
+  DATA.courses.forEach(c=>{
+    const d = c._detail || c;
+    const hits = [];
+    // 搜索标题
+    if((c.title||'').toLowerCase().includes(lower)){
+      hits.push({ field:'标题', text:c.title, tab:'notes' });
+    }
+    // 搜索笔记
+    const notes = d.notes || {};
+    (notes.frameworks||[]).forEach((f,i)=>{
+      const content = [f.name,f.definition,f.scenario,(f.steps||[]).join(' '),f.myTake].join(' ');
+      if(content.toLowerCase().includes(lower)){
+        const pos = content.toLowerCase().indexOf(lower);
+        const start = Math.max(0, pos-15);
+        const snippet = content.slice(start, pos+kw.length+20).replace(/\n/g,' ');
+        hits.push({ field:'笔记·'+(f.name||'').slice(0,8), text:snippet, tab:'notes', fwIndex:i });
+      }
+    });
+    (notes.keyPoints||[]).forEach((k,i)=>{
+      const content = [k.point,k.evidence,k.question].join(' ');
+      if(content.toLowerCase().includes(lower)){
+        hits.push({ field:'观点·'+(i+1), text:k.point.slice(0,40), tab:'notes' });
+      }
+    });
+    (notes.cases||[]).forEach((c2,i)=>{
+      const content = [c2.case,c2.note,c2.useFor].join(' ');
+      if(content.toLowerCase().includes(lower)){
+        hits.push({ field:'案例·'+(i+1), text:(c2.case||'').slice(0,40), tab:'notes' });
+      }
+    });
+    // 搜索习题
+    (d.exercises||[]).forEach((e,i)=>{
+      const content = [e.q,e.answer,e.framework,e.tests].join(' ');
+      if(content.toLowerCase().includes(lower)){
+        hits.push({ field:'习题·'+(i+1), text:e.q.slice(0,40), tab:'exercises' });
+      }
+    });
+    // 搜索面试题
+    ((d.interview&&d.interview.questions)||[]).forEach((q,i)=>{
+      const content = [q.q,q.answer,q.framework].join(' ');
+      if(content.toLowerCase().includes(lower)){
+        hits.push({ field:'面试·'+(i+1), text:q.q.slice(0,40), tab:'interview' });
+      }
+    });
+    if(hits.length>0){
+      results.push({ course:c, hits:hits.slice(0,5) }); // 每课最多显示5条
+    }
+  });
+  return results;
+}
+
 function renderTree(){
   const tree = document.getElementById('tree');
   const kw = document.getElementById('search').value.trim();
   let html = '';
+
+  // 深度搜索模式（输入≥2字符时）
+  if(kw.length>=2){
+    const results = deepSearch(kw);
+    if(results.length===0){
+      html += `<div class="empty">未找到「${escapeHtml(kw)}」相关内容</div>`;
+    } else {
+      html += `<div class="group-title">搜索结果 (${results.reduce((s,r)=>s+r.hits.length,0)} 条)</div>`;
+      results.forEach(r=>{
+        html += `<div class="search-course-title">${escapeHtml(r.course.title)}</div>`;
+        r.hits.forEach(h=>{
+          html += `<div class="search-hit" data-course="${r.course.id}" data-tab="${h.tab}"><span class="sh-field">${escapeHtml(h.field)}</span><span class="sh-text">${escapeHtml(h.text)}</span></div>`;
+        });
+      });
+    }
+    tree.innerHTML = html;
+    tree.querySelectorAll('.search-hit').forEach(el=>{
+      el.onclick = ()=> searchJump(el.dataset.course, el.dataset.tab, kw);
+    });
+    return;
+  }
+
+  // 常规目录模式
   if(view==='topic'){
     DATA.topics.forEach(t=>{
       const subs = DATA.courses.filter(c=>(c.topics||[]).includes(t.id) && match(c,kw));
@@ -439,6 +617,51 @@ function renderTree(){
   tree.querySelectorAll('.item').forEach(el=>{
     el.onclick = ()=> openCourse(el.dataset.id);
   });
+}
+
+function searchJump(courseId, tab, kw){
+  openCourse(courseId);
+  // 切到对应 tab
+  setTimeout(()=>{
+    const btn = document.querySelector(`.tabs button[data-t="${tab}"]`);
+    if(btn) btn.click();
+    // 高亮闪烁
+    setTimeout(()=>highlightAndFlash(kw), 300);
+  }, 100);
+}
+
+function highlightAndFlash(kw){
+  const box = document.getElementById('tabContent');
+  if(!box) return;
+  // 清除之前的高亮
+  box.querySelectorAll('.search-flash').forEach(el=>{
+    el.replaceWith(document.createTextNode(el.textContent));
+  });
+  // 查找并包裹匹配文本
+  const walker = document.createTreeWalker(box, NodeFilter.SHOW_TEXT, null);
+  const ranges = [];
+  let node;
+  while(node = walker.nextNode()){
+    const idx = node.textContent.toLowerCase().indexOf(kw.toLowerCase());
+    if(idx >= 0 && node.parentElement && !node.parentElement.closest('.mermaid')){
+      ranges.push({ node, idx });
+    }
+  }
+  ranges.forEach(({node, idx})=>{
+    const range = document.createRange();
+    range.setStart(node, idx);
+    range.setEnd(node, idx + kw.length);
+    const span = document.createElement('span');
+    span.className = 'search-flash';
+    try{ range.surroundContents(span); }catch(e){}
+  });
+  // 闪烁动画
+  const flashes = box.querySelectorAll('.search-flash');
+  if(flashes.length > 0){
+    flashes[0].scrollIntoView({ behavior:'smooth', block:'center' });
+    flashes.forEach(f=>f.classList.add('flashing'));
+    setTimeout(()=>{ flashes.forEach(f=>{ f.classList.remove('flashing'); f.classList.add('active'); }); }, 2600);
+  }
 }
 
 function itemHtml(c){
@@ -491,10 +714,27 @@ function normDiagrams(f){
   if(f.diagram) return [{title:'图', code:f.diagram}];
   return null;
 }
-function renderDiagrams(f){
+function renderDiagrams(f, fi){
   const ds=normDiagrams(f);
   if(!ds) return '';
-  return ds.map((d,i)=>`<div class="diagram"><div class="dg-head" onclick="toggleDiagram(this)"><span>◈ 图 · ${d.title||('配图 '+(i+1))}</span><span class="chev">▼</span></div><div class="dg-body"><pre class="mermaid">${d.code}</pre></div></div>`).join('');
+  return ds.map((d,i)=>`<div class="diagram" data-fw="${fi}" data-dg="${i}"><div class="dg-head" onclick="toggleDiagram(this)"><span>◈ 图 · ${d.title||('配图 '+(i+1))}</span><span style="display:flex;align-items:center;gap:8px">${IS_STATIC?'':'<button class="dg-del" onclick="deleteDiagram(event,'+fi+','+i+')" title="删除此图">✕</button>'}<span class="chev">▼</span></span></div><div class="dg-body"><pre class="mermaid">${d.code}</pre></div></div>`).join('');
+}
+async function deleteDiagram(e, fi, di){
+  e.stopPropagation();
+  if(!confirm('确定删除这张配图？删除后同步到 GitHub 也将移除。')) return;
+  const d=getDetail();
+  const f=d.notes.frameworks[fi];
+  const ds=normDiagrams(f);
+  if(!ds) return;
+  ds.splice(di,1);
+  if(ds.length===0){ delete f.diagrams; delete f.diagram; }
+  else f.diagrams=ds;
+  try{
+    const r=await fetch('/api/course/'+encodeURIComponent(current),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)});
+    const res=await r.json();
+    if(!res.ok) throw new Error(res.error||'保存失败');
+    openCourse(current); switchTab('notes');
+  }catch(err){ alert('删除失败：'+err.message); }
 }
 function toggleDiagram(head){
   head.parentElement.classList.toggle('collapsed');
@@ -506,7 +746,7 @@ function renderNotes(n){
     if(f.definition) h+=`<div class="row"><b>定义</b>：${f.definition}</div>`;
     if(f.scenario) h+=`<div class="row"><b>适用场景</b>：${f.scenario}</div>`;
     if(f.steps&&f.steps.length) h+=`<div class="row"><b>关键步骤</b></div><ul>${f.steps.map(s=>`<li>${s}</li>`).join('')}</ul>`;
-    h+=renderDiagrams(f);
+    h+=renderDiagrams(f,i);
     if(f.myTake){
       const saved=getUserTake(current,i);
       h+=`<div class="mytake"><button class="editbtn" onclick="editTake(${i})">✎ 修改</button><span>我的理解 ·</span> <span class="ai-take">${f.myTake}</span>`;
@@ -533,9 +773,7 @@ function renderNotes(n){
   if(n.questions&&n.questions.length){
     h += `<div class="sec"><h3>疑问 & 待澄清</h3><div class="card"><ul>${n.questions.map(q=>`<li>${q}</li>`).join('')}</ul></div></div>`;
   }
-  if(n.connections){
-    h += `<div class="sec"><h3>与已有知识的连接</h3><div class="mytake">${n.connections}</div></div>`;
-  }
+  // "与已有知识的连接"板块已移除
   return h || `<div class="empty">暂无笔记内容</div>`;
 }
 
@@ -688,7 +926,347 @@ if(drop){
   ['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('over');}));
   drop.addEventListener('drop',e=>{const f=e.dataTransfer.files[0];if(f)handleFile(f);});
 }
+
+/* ---- 主题切换 ---- */
+function toggleTheme(){
+  const html=document.documentElement;
+  const cur=html.getAttribute('data-theme')||'dark';
+  const next=cur==='dark'?'cream':'dark';
+  html.setAttribute('data-theme',next);
+  localStorage.setItem('ai-learn-theme',next);
+  document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙';
+  // 重新渲染 mermaid（颜色需适配）
+  if(window.mermaid && current){
+    mermaid.initialize({
+      startOnLoad:false,
+      theme:next==='dark'?'dark':'neutral',
+      themeVariables:next==='dark'?{
+        primaryColor:'#1e222b',primaryTextColor:'#e6e8ec',primaryBorderColor:'#7F77DD',
+        lineColor:'#9aa3b2',secondaryColor:'#171a21',tertiaryColor:'#171a21',
+        background:'#171a21',mainBkg:'#1e222b',nodeBorder:'#7F77DD',
+        clusterBkg:'#171a21',clusterBorder:'#2a2f3a',titleColor:'#e6e8ec',
+        edgeLabelBackground:'#1e222b',fontSize:'14px'
+      }:{
+        primaryColor:'#F5F0E8',primaryTextColor:'#3A3630',primaryBorderColor:'#6B5CE7',
+        lineColor:'#7A7268',secondaryColor:'#FFFFFF',tertiaryColor:'#FFFFFF',
+        background:'#FFFFFF',mainBkg:'#F5F0E8',nodeBorder:'#6B5CE7',
+        clusterBkg:'#FFFFFF',clusterBorder:'#E8E0D4',titleColor:'#3A3630',
+        edgeLabelBackground:'#F5F0E8',fontSize:'14px'
+      }
+    });
+    switchTab('notes');
+  }
+}
+// 初始化主题
+(function(){
+  const saved=localStorage.getItem('ai-learn-theme')||'dark';
+  document.documentElement.setAttribute('data-theme',saved);
+  document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';
+})();
+
+/* ---- 头像上传 ---- */
+function changeAvatar(input){
+  if(!input.files||!input.files[0]) return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const dataUrl=e.target.result;
+    document.getElementById('avatarImg').src=dataUrl;
+    localStorage.setItem('ai-learn-avatar',dataUrl);
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+(function(){
+  const saved=localStorage.getItem('ai-learn-avatar');
+  if(saved) document.getElementById('avatarImg').src=saved;
+})();
+
 load();
+
+/* ---- 关系图谱（Obsidian 风格 · 知识点级别力导向图） ---- */
+let graphNodes = [], graphLinks = [];
+let graphCanvas, graphCtx, graphAnim;
+
+// 提取知识点关键词（用于跨课程关联）
+function extractConcepts(text){
+  if(!text) return [];
+  const concepts = new Set();
+  // 已知核心概念词表（跨课程共享的知识点）
+  const knownConcepts = [
+    'A/B测试','评测集','Checkpoint','Rubric','bad case','用户画像','漏斗','CTR','CVR',
+    'Agent','多模态','开源','AI Native','Prompt','Skill','RAG','知识库','检索',
+    '需求评审','PRD','用户调研','真需求','伪需求','产品生命周期','环比','同比',
+    'OKR','KPI','北极星指标','留存率','转化率','灰度','迭代',
+    'LLM','大模型','深度学习','预训练','微调','Token','幻觉',
+    '控制变量','统计学显著','样本量','对照组','实验组',
+    '火山引擎','豆包','混元','Seed','飞书','微信','抖音',
+    'C端','B端','中台','商业化','增长','留存','转化',
+    '归因','闭环','Trace','日志','路由','意图识别','转人工'
+  ];
+  const lower = text.toLowerCase();
+  knownConcepts.forEach(c=>{
+    if(lower.includes(c.toLowerCase())) concepts.add(c);
+  });
+  return [...concepts];
+}
+
+function buildGraphData(){
+  const nodes = [];
+  const links = [];
+  const conceptMap = {}; // concept -> node index
+  const courseNodes = {}; // courseId -> node index
+
+  // 1. 创建课程节点
+  DATA.courses.forEach(c=>{
+    if(c.id==='demo-需求评审实战') return; // 跳过示例
+    const idx = nodes.length;
+    courseNodes[c.id] = idx;
+    nodes.push({
+      id: 'course-'+c.id,
+      label: c.title.replace(/^(通识|基础项目|评测|AI Native).{0,3}[：:]\s*/,'').slice(0,12),
+      fullLabel: c.title,
+      type: 'course',
+      radius: 14,
+      courseId: c.id,
+      x:0, y:0, vx:0, vy:0
+    });
+  });
+
+  // 2. 从每个课程的 frameworks 中提取知识点，创建知识点节点
+  DATA.courses.forEach(c=>{
+    if(c.id==='demo-需求评审实战') return;
+    const detail = c._detail || c;
+    const frameworks = (detail.notes && detail.notes.frameworks) || [];
+    frameworks.forEach((f,fi)=>{
+      // 用框架名作为知识点节点（取核心关键词）
+      const name = f.name.replace(/[（(].*?[)）]/g,'').replace(/[：:].*$/,'').trim();
+      if(!name || name.length<3) return;
+      // 检查是否已有相似概念节点
+      let existingIdx = -1;
+      for(const [concept, idx] of Object.entries(conceptMap)){
+        if(name.includes(concept) || concept.includes(name.slice(0,4))){
+          existingIdx = idx;
+          break;
+        }
+      }
+      if(existingIdx >= 0){
+        // 已有相似节点，建立连线
+        links.push({ source: courseNodes[c.id], target: existingIdx, type: 'contains' });
+      } else {
+        // 新建知识点节点
+        const idx = nodes.length;
+        conceptMap[name.slice(0,6)] = idx;
+        nodes.push({
+          id: 'kp-'+c.id+'-'+fi,
+          label: name.slice(0,10),
+          fullLabel: f.name,
+          type: 'concept',
+          radius: 7,
+          courseId: c.id,
+          concepts: extractConcepts(f.name + ' ' + (f.definition||'') + ' ' + (f.scenario||'')),
+          x:0, y:0, vx:0, vy:0
+        });
+        links.push({ source: courseNodes[c.id], target: idx, type: 'contains' });
+      }
+    });
+  });
+
+  // 3. 跨课程知识点关联（基于共享概念）
+  const conceptNodes = nodes.map((n,i)=>({...n, idx:i})).filter(n=>n.type==='concept');
+  for(let i=0;i<conceptNodes.length;i++){
+    for(let j=i+1;j<conceptNodes.length;j++){
+      const a=conceptNodes[i], b=conceptNodes[j];
+      if(a.courseId===b.courseId) continue; // 同课程不连
+      const shared = a.concepts.filter(c=>b.concepts.includes(c));
+      if(shared.length >= 2){
+        links.push({ source: a.idx, target: b.idx, type: 'related', shared });
+      }
+    }
+  }
+
+  graphNodes = nodes;
+  graphLinks = links;
+}
+
+function openGraph(){
+  buildGraphData();
+  const overlay = document.getElementById('graphOverlay');
+  overlay.classList.add('open');
+  const canvas = document.getElementById('graphCanvas');
+  const container = canvas.parentElement;
+  canvas.width = container.clientWidth;
+  canvas.height = container.clientHeight;
+  graphCanvas = canvas;
+  graphCtx = canvas.getContext('2d');
+  // 初始化位置
+  const cx = canvas.width/2, cy = canvas.height/2;
+  graphNodes.forEach((n,i)=>{
+    const angle = (i / graphNodes.length) * Math.PI * 2;
+    const R = Math.min(cx, cy) * (n.type==='course' ? 0.5 : 0.7);
+    n.x = cx + R * Math.cos(angle) + (Math.random()-0.5)*40;
+    n.y = cy + R * Math.sin(angle) + (Math.random()-0.5)*40;
+  });
+  startSimulation();
+}
+
+function closeGraph(){
+  document.getElementById('graphOverlay').classList.remove('open');
+  if(graphAnim) cancelAnimationFrame(graphAnim);
+}
+
+function startSimulation(){
+  let ticks = 0;
+  function tick(){
+    ticks++;
+    const W = graphCanvas.width, H = graphCanvas.height;
+    const cx = W/2, cy = H/2;
+    // 斥力
+    for(let i=0;i<graphNodes.length;i++){
+      for(let j=i+1;j<graphNodes.length;j++){
+        const a=graphNodes[i], b=graphNodes[j];
+        let dx=a.x-b.x, dy=a.y-b.y;
+        let dist=Math.sqrt(dx*dx+dy*dy)||1;
+        let minDist=(a.radius+b.radius+30);
+        if(dist<minDist*4){
+          let force=(minDist*minDist)/dist*0.015;
+          let fx=dx/dist*force, fy=dy/dist*force;
+          a.vx+=fx; a.vy+=fy; b.vx-=fx; b.vy-=fy;
+        }
+      }
+    }
+    // 连线弹力
+    graphLinks.forEach(l=>{
+      const a=graphNodes[l.source], b=graphNodes[l.target];
+      let dx=b.x-a.x, dy=b.y-a.y;
+      let dist=Math.sqrt(dx*dx+dy*dy)||1;
+      let target=l.type==='related'?180:100;
+      let force=(dist-target)/dist*0.03;
+      let fx=dx*force, fy=dy*force;
+      a.vx+=fx; a.vy+=fy; b.vx-=fx; b.vy-=fy;
+    });
+    // 中心引力
+    graphNodes.forEach(n=>{
+      n.vx+=(cx-n.x)*0.001;
+      n.vy+=(cy-n.y)*0.001;
+    });
+    // 速度衰减 + 位置更新
+    graphNodes.forEach(n=>{
+      n.vx*=0.85; n.vy*=0.85;
+      n.x+=n.vx; n.y+=n.vy;
+      n.x=Math.max(n.radius+10,Math.min(W-n.radius-10,n.x));
+      n.y=Math.max(n.radius+10,Math.min(H-n.radius-10,n.y));
+    });
+    drawGraph();
+    if(ticks<400) graphAnim=requestAnimationFrame(tick);
+  }
+  tick();
+}
+
+function drawGraph(){
+  const W=graphCanvas.width, H=graphCanvas.height;
+  graphCtx.clearRect(0,0,W,H);
+  const isDark = !document.documentElement.getAttribute('data-theme') || document.documentElement.getAttribute('data-theme')==='dark';
+  // 连线
+  graphLinks.forEach(l=>{
+    const a=graphNodes[l.source], b=graphNodes[l.target];
+    if(l.type==='related'){
+      // 跨课程关联线（虚线）
+      graphCtx.strokeStyle = isDark ? 'rgba(239,159,39,0.3)' : 'rgba(212,136,15,0.35)';
+      graphCtx.lineWidth = 1;
+      graphCtx.setLineDash([4,3]);
+    } else {
+      // 课程-知识点线
+      graphCtx.strokeStyle = isDark ? 'rgba(127,119,221,0.2)' : 'rgba(107,92,231,0.25)';
+      graphCtx.lineWidth = 1;
+      graphCtx.setLineDash([]);
+    }
+    graphCtx.beginPath();
+    graphCtx.moveTo(a.x,a.y);
+    graphCtx.lineTo(b.x,b.y);
+    graphCtx.stroke();
+  });
+  graphCtx.setLineDash([]);
+  // 节点
+  graphNodes.forEach(n=>{
+    const r=n.radius;
+    // 光晕
+    graphCtx.beginPath();
+    graphCtx.arc(n.x,n.y,r+3,0,Math.PI*2);
+    const glowColors = { course:'rgba(127,119,221,0.15)', concept:'rgba(29,158,117,0.12)' };
+    graphCtx.fillStyle = isDark ? glowColors[n.type] : glowColors[n.type].replace('0.15','0.1').replace('0.12','0.08');
+    graphCtx.fill();
+    // 圆
+    graphCtx.beginPath();
+    graphCtx.arc(n.x,n.y,r,0,Math.PI*2);
+    graphCtx.fillStyle = n.type==='course' ? '#7F77DD' : '#1D9E75';
+    graphCtx.fill();
+    // 标签
+    graphCtx.fillStyle = isDark ? '#e6e8ec' : '#3A3630';
+    graphCtx.font = (n.type==='course'?'600 11px':'400 10px') + ' -apple-system,"PingFang SC",sans-serif';
+    graphCtx.textAlign='center';
+    graphCtx.textBaseline='top';
+    graphCtx.fillText(n.label, n.x, n.y+r+3);
+  });
+}
+
+// 悬停提示 + 点击跳转
+document.addEventListener('DOMContentLoaded',()=>{
+  const canvas = document.getElementById('graphCanvas');
+  const tooltip = document.getElementById('graphTooltip');
+  if(!canvas) return;
+  canvas.addEventListener('mousemove',e=>{
+    const rect=canvas.getBoundingClientRect();
+    const mx=e.clientX-rect.left, my=e.clientY-rect.top;
+    let found=null;
+    for(const n of graphNodes){
+      const dx=mx-n.x, dy=my-n.y;
+      if(dx*dx+dy*dy < (n.radius+6)*(n.radius+6)){ found=n; break; }
+    }
+    if(found){
+      tooltip.style.display='block';
+      tooltip.style.left=(mx+12)+'px';
+      tooltip.style.top=(my-30)+'px';
+      const typeLabel = found.type==='course' ? '课程' : '知识点';
+      tooltip.innerHTML=`<div class="tt-title">${found.fullLabel||found.label}</div><div class="tt-sub">${typeLabel} · 点击查看</div>`;
+      canvas.style.cursor='pointer';
+    } else {
+      tooltip.style.display='none';
+      canvas.style.cursor='default';
+    }
+  });
+  canvas.addEventListener('click',e=>{
+    const rect=canvas.getBoundingClientRect();
+    const mx=e.clientX-rect.left, my=e.clientY-rect.top;
+    for(const n of graphNodes){
+      const dx=mx-n.x, dy=my-n.y;
+      if(dx*dx+dy*dy < (n.radius+6)*(n.radius+6)){
+        if(n.courseId){
+          closeGraph();
+          openCourse(n.courseId);
+        }
+        break;
+      }
+    }
+  });
+  // 拖拽
+  let dragNode=null;
+  canvas.addEventListener('mousedown',e=>{
+    const rect=canvas.getBoundingClientRect();
+    const mx=e.clientX-rect.left, my=e.clientY-rect.top;
+    for(const n of graphNodes){
+      const dx=mx-n.x, dy=my-n.y;
+      if(dx*dx+dy*dy < (n.radius+6)*(n.radius+6)){ dragNode=n; break; }
+    }
+  });
+  canvas.addEventListener('mousemove',e=>{
+    if(dragNode){
+      const rect=canvas.getBoundingClientRect();
+      dragNode.x=e.clientX-rect.left;
+      dragNode.y=e.clientY-rect.top;
+      dragNode.vx=0; dragNode.vy=0;
+    }
+  });
+  canvas.addEventListener('mouseup',()=>{ dragNode=null; });
+});
 </script>
 </body>
 </html>
